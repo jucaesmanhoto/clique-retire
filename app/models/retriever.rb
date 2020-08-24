@@ -1,0 +1,2 @@
+class Retriever < ApplicationRecord
+end
