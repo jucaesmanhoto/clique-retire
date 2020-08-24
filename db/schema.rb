@@ -10,10 +10,90 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_24_134043) do
+ActiveRecord::Schema.define(version: 2020_08_24_220608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "street"
+    t.string "number"
+    t.string "complement"
+    t.string "neighborhood"
+    t.string "state"
+    t.string "zip"
+    t.string "city"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "deliverer_addresses", force: :cascade do |t|
+    t.bigint "address_id", null: false
+    t.bigint "users_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["address_id"], name: "index_deliverer_addresses_on_address_id"
+    t.index ["users_id"], name: "index_deliverer_addresses_on_users_id"
+  end
+
+  create_table "deliverer_orders", force: :cascade do |t|
+    t.string "qr_code"
+    t.bigint "e_boxes_id", null: false
+    t.bigint "orders_id", null: false
+    t.bigint "users_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["e_boxes_id"], name: "index_deliverer_orders_on_e_boxes_id"
+    t.index ["orders_id"], name: "index_deliverer_orders_on_orders_id"
+    t.index ["users_id"], name: "index_deliverer_orders_on_users_id"
+  end
+
+  create_table "e_boxes", force: :cascade do |t|
+    t.string "e_box_code"
+    t.string "compartiment_size"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "price_in_cents"
+    t.string "status"
+    t.bigint "payments_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["payments_id"], name: "index_orders_on_payments_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.string "card_number"
+    t.string "card_holder"
+    t.string "card_expiry_date"
+    t.string "card_cvv"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "retrievers", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.string "mobile"
+    t.string "document"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "retriver_orders", force: :cascade do |t|
+    t.string "qr_code"
+    t.bigint "e_boxes_id", null: false
+    t.bigint "orders_id", null: false
+    t.bigint "retrievers_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["e_boxes_id"], name: "index_retriver_orders_on_e_boxes_id"
+    t.index ["orders_id"], name: "index_retriver_orders_on_orders_id"
+    t.index ["retrievers_id"], name: "index_retriver_orders_on_retrievers_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -23,8 +103,22 @@ ActiveRecord::Schema.define(version: 2020_08_24_134043) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "mobile"
+    t.string "document"
+    t.boolean "admin"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "deliverer_addresses", "addresses"
+  add_foreign_key "deliverer_addresses", "users", column: "users_id"
+  add_foreign_key "deliverer_orders", "e_boxes", column: "e_boxes_id"
+  add_foreign_key "deliverer_orders", "orders", column: "orders_id"
+  add_foreign_key "deliverer_orders", "users", column: "users_id"
+  add_foreign_key "orders", "payments", column: "payments_id"
+  add_foreign_key "retriver_orders", "e_boxes", column: "e_boxes_id"
+  add_foreign_key "retriver_orders", "orders", column: "orders_id"
+  add_foreign_key "retriver_orders", "retrievers", column: "retrievers_id"
 end
