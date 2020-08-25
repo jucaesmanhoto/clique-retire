@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_24_220608) do
+ActiveRecord::Schema.define(version: 2020_08_25_023832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,21 +36,21 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
     t.index ["users_id"], name: "index_deliverer_addresses_on_users_id"
   end
 
-  create_table "deliverer_orders", force: :cascade do |t|
+  create_table "deliveries", force: :cascade do |t|
     t.string "qr_code"
     t.bigint "e_boxes_id", null: false
     t.bigint "orders_id", null: false
     t.bigint "users_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["e_boxes_id"], name: "index_deliverer_orders_on_e_boxes_id"
-    t.index ["orders_id"], name: "index_deliverer_orders_on_orders_id"
-    t.index ["users_id"], name: "index_deliverer_orders_on_users_id"
+    t.index ["e_boxes_id"], name: "index_deliveries_on_e_boxes_id"
+    t.index ["orders_id"], name: "index_deliveries_on_orders_id"
+    t.index ["users_id"], name: "index_deliveries_on_users_id"
   end
 
   create_table "e_boxes", force: :cascade do |t|
     t.string "e_box_code"
-    t.string "compartiment_size"
+    t.string "compartment_size"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -61,7 +61,11 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
     t.bigint "payments_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "delivery_id", null: false
+    t.bigint "retrieval_id", null: false
+    t.index ["delivery_id"], name: "index_orders_on_delivery_id"
     t.index ["payments_id"], name: "index_orders_on_payments_id"
+    t.index ["retrieval_id"], name: "index_orders_on_retrieval_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -73,6 +77,18 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "retrievals", force: :cascade do |t|
+    t.string "qr_code"
+    t.bigint "e_boxes_id", null: false
+    t.bigint "orders_id", null: false
+    t.bigint "retrievers_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["e_boxes_id"], name: "index_retrievals_on_e_boxes_id"
+    t.index ["orders_id"], name: "index_retrievals_on_orders_id"
+    t.index ["retrievers_id"], name: "index_retrievals_on_retrievers_id"
+  end
+
   create_table "retrievers", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -81,18 +97,6 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
     t.string "document"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "retriver_orders", force: :cascade do |t|
-    t.string "qr_code"
-    t.bigint "e_boxes_id", null: false
-    t.bigint "orders_id", null: false
-    t.bigint "retrievers_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["e_boxes_id"], name: "index_retriver_orders_on_e_boxes_id"
-    t.index ["orders_id"], name: "index_retriver_orders_on_orders_id"
-    t.index ["retrievers_id"], name: "index_retriver_orders_on_retrievers_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -114,11 +118,13 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
 
   add_foreign_key "deliverer_addresses", "addresses"
   add_foreign_key "deliverer_addresses", "users", column: "users_id"
-  add_foreign_key "deliverer_orders", "e_boxes", column: "e_boxes_id"
-  add_foreign_key "deliverer_orders", "orders", column: "orders_id"
-  add_foreign_key "deliverer_orders", "users", column: "users_id"
+  add_foreign_key "deliveries", "e_boxes", column: "e_boxes_id"
+  add_foreign_key "deliveries", "orders", column: "orders_id"
+  add_foreign_key "deliveries", "users", column: "users_id"
+  add_foreign_key "orders", "deliveries"
   add_foreign_key "orders", "payments", column: "payments_id"
-  add_foreign_key "retriver_orders", "e_boxes", column: "e_boxes_id"
-  add_foreign_key "retriver_orders", "orders", column: "orders_id"
-  add_foreign_key "retriver_orders", "retrievers", column: "retrievers_id"
+  add_foreign_key "orders", "retrievals"
+  add_foreign_key "retrievals", "e_boxes", column: "e_boxes_id"
+  add_foreign_key "retrievals", "orders", column: "orders_id"
+  add_foreign_key "retrievals", "retrievers", column: "retrievers_id"
 end
