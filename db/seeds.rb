@@ -81,9 +81,9 @@ second_payment = Payment.create!()
 third_payment = Payment.create!()
 
 puts 'Creating Orders...'
-first_order = Order.create!(payment: first_payment, price_in_cents: 1000)
-second_order = Order.create!(payment: second_payment, price_in_cents: 2000)
-third_order = Order.create!(payment: third_payment, price_in_cents: 3000)
+Order.create!(payment: first_payment, price_in_cents: 1000)
+Order.create!(payment: second_payment, price_in_cents: 2000)
+Order.create!(payment: third_payment, price_in_cents: 3000)
 
 puts 'Creating Retriver...'
 retriever = Retriever.create!(
