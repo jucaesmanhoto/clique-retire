@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RetriverOrderTest < ActiveSupport::TestCase
+class RetrieverEboxTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

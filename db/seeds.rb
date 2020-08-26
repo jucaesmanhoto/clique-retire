@@ -5,3 +5,106 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+puts 'Destroying Orders...'
+Order.destroy_all
+puts 'Destroying EBoxes...'
+EBox.destroy_all
+puts 'Destroying Payments...'
+Payment.destroy_all
+puts 'Destroying Retrievers...'
+Retriever.destroy_all
+puts 'Destroying Deliverer Addresses...'
+DelivererAddress.destroy_all
+puts 'Destroying Addresses...'
+Address.destroy_all
+puts 'Destroying Users...'
+User.destroy_all
+
+puts 'Creating new Users...'
+puts 'Creating first User as admin...'
+
+first_user = User.create!(
+    email: 'john@doe.com', 
+    password: '123456', 
+    first_name: 'John', 
+    last_name: 'Doe',
+    mobile: '11987654321',
+    document: '01234567890',
+    admin: true
+)
+puts 'Creating second User...'
+second_user = User.create!(
+    email: 't@t', 
+    password: '123456', 
+    first_name: 'João', 
+    last_name: 'Esmanhoto',
+    mobile: '11987654321',
+    document: '01234567890',
+    admin: false
+)
+
+puts 'Creating Addresses...'
+first_address = Address.create!(
+    street: 'Rua dos Caetés',
+    number: '885',
+    complement: 'apto. 112',
+    neighborhood: 'Perdizes',
+    city: 'São Paulo',
+    state: 'SP',
+    zip: '05016081'
+)
+second_address = Address.create!(
+    street: 'Rua Mourato Coelho',
+    number: '1404',
+    complement: 'sala 21',
+    neighborhood: 'Vila Madalena',
+    city: 'São Paulo',
+    state: 'SP',
+    zip: '05016081'
+)
+puts 'Assigning addresses to users...'
+DelivererAddress.create!(user: first_user, address: first_address)
+DelivererAddress.create!(user: second_user, address: second_address)
+puts 'Creating E-Boxes...'
+e_box_1 = EBox.create!(
+    e_box_code: 'e-box-1-code',
+    compartiment_size: 'small',
+)
+e_box_2 = EBox.create!(
+    e_box_code: 'e-box-2-code',
+    compartiment_size: 'medium',
+)
+puts 'Creating Payments...'
+first_payment = Payment.create!()
+second_payment = Payment.create!()
+third_payment = Payment.create!()
+
+puts 'Creating Orders...'
+first_order = Order.create!(payment: first_payment, price_in_cents: 1000)
+second_order = Order.create!(payment: second_payment, price_in_cents: 2000)
+third_order = Order.create!(payment: third_payment, price_in_cents: 3000)
+
+puts 'Creating Retriver...'
+retriever = Retriever.create!(
+    email: 'jane@doe.com', 
+    first_name: 'Jane', 
+    last_name: 'Doe',
+    mobile: '01234567890',
+    document: '0987654321',
+)
+
+puts 'Assingning first order'
+DelivererOrder.create!(
+    user: first_user,
+    order: first_order,
+    e_box: e_box_1,
+    qr_code: 'hjvgowi73u7ujcnxa9w87xujfcpkdc'
+)
+RetrieverOrder.create!(
+    retriever: retriever,
+    order: first_order,
+    e_box: e_box_2,
+    qr_code: 'hjvgowi73u7ujcnxa9w87xujfcpkdc'
+)
+

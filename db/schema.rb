@@ -29,23 +29,23 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
 
   create_table "deliverer_addresses", force: :cascade do |t|
     t.bigint "address_id", null: false
-    t.bigint "users_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["address_id"], name: "index_deliverer_addresses_on_address_id"
-    t.index ["users_id"], name: "index_deliverer_addresses_on_users_id"
+    t.index ["user_id"], name: "index_deliverer_addresses_on_user_id"
   end
 
   create_table "deliverer_orders", force: :cascade do |t|
     t.string "qr_code"
-    t.bigint "e_boxes_id", null: false
-    t.bigint "orders_id", null: false
-    t.bigint "users_id", null: false
+    t.bigint "e_box_id", null: false
+    t.bigint "order_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["e_boxes_id"], name: "index_deliverer_orders_on_e_boxes_id"
-    t.index ["orders_id"], name: "index_deliverer_orders_on_orders_id"
-    t.index ["users_id"], name: "index_deliverer_orders_on_users_id"
+    t.index ["e_box_id"], name: "index_deliverer_orders_on_e_box_id"
+    t.index ["order_id"], name: "index_deliverer_orders_on_order_id"
+    t.index ["user_id"], name: "index_deliverer_orders_on_user_id"
   end
 
   create_table "e_boxes", force: :cascade do |t|
@@ -57,11 +57,11 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
 
   create_table "orders", force: :cascade do |t|
     t.integer "price_in_cents"
-    t.string "status"
-    t.bigint "payments_id", null: false
+    t.string "status", default: "placed"
+    t.bigint "payment_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["payments_id"], name: "index_orders_on_payments_id"
+    t.index ["payment_id"], name: "index_orders_on_payment_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -73,6 +73,18 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "retriever_orders", force: :cascade do |t|
+    t.string "qr_code"
+    t.bigint "e_box_id", null: false
+    t.bigint "order_id", null: false
+    t.bigint "retriever_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["e_box_id"], name: "index_retriever_orders_on_e_box_id"
+    t.index ["order_id"], name: "index_retriever_orders_on_order_id"
+    t.index ["retriever_id"], name: "index_retriever_orders_on_retriever_id"
+  end
+
   create_table "retrievers", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -81,18 +93,6 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
     t.string "document"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "retriver_orders", force: :cascade do |t|
-    t.string "qr_code"
-    t.bigint "e_boxes_id", null: false
-    t.bigint "orders_id", null: false
-    t.bigint "retrievers_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["e_boxes_id"], name: "index_retriver_orders_on_e_boxes_id"
-    t.index ["orders_id"], name: "index_retriver_orders_on_orders_id"
-    t.index ["retrievers_id"], name: "index_retriver_orders_on_retrievers_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -113,12 +113,12 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
   end
 
   add_foreign_key "deliverer_addresses", "addresses"
-  add_foreign_key "deliverer_addresses", "users", column: "users_id"
-  add_foreign_key "deliverer_orders", "e_boxes", column: "e_boxes_id"
-  add_foreign_key "deliverer_orders", "orders", column: "orders_id"
-  add_foreign_key "deliverer_orders", "users", column: "users_id"
-  add_foreign_key "orders", "payments", column: "payments_id"
-  add_foreign_key "retriver_orders", "e_boxes", column: "e_boxes_id"
-  add_foreign_key "retriver_orders", "orders", column: "orders_id"
-  add_foreign_key "retriver_orders", "retrievers", column: "retrievers_id"
+  add_foreign_key "deliverer_addresses", "users"
+  add_foreign_key "deliverer_orders", "e_boxes"
+  add_foreign_key "deliverer_orders", "orders"
+  add_foreign_key "deliverer_orders", "users"
+  add_foreign_key "orders", "payments"
+  add_foreign_key "retriever_orders", "e_boxes"
+  add_foreign_key "retriever_orders", "orders"
+  add_foreign_key "retriever_orders", "retrievers"
 end
