@@ -1,6 +1,6 @@
 class EBox < ApplicationRecord
-    has_many :deliverer_orders
-    has_many :retriever_orders
-    has_many :orders, through: :deliverer_orders
-    has_many :orders, through: :retriever_orders
+    has_many :delivers
+    has_many :retrievals
+    has_many :orders, through: :delivers
+    has_many :orders, through: :retrievals
 end

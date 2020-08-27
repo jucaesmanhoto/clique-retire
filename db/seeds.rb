@@ -77,13 +77,6 @@ e_box_2 = EBox.create!(
 )
 puts 'Creating Payments...'
 first_payment = Payment.create!()
-second_payment = Payment.create!()
-third_payment = Payment.create!()
-
-puts 'Creating Orders...'
-Order.create!(payment: first_payment, price_in_cents: 1000)
-Order.create!(payment: second_payment, price_in_cents: 2000)
-Order.create!(payment: third_payment, price_in_cents: 3000)
 
 puts 'Creating Retriver...'
 retriever = Retriever.create!(
@@ -95,16 +88,21 @@ retriever = Retriever.create!(
 )
 
 puts 'Assingning first order'
-DelivererOrder.create!(
+deliver = Deliver.create!(
     user: first_user,
-    order: first_order,
     e_box: e_box_1,
     qr_code: 'hjvgowi73u7ujcnxa9w87xujfcpkdc'
 )
-RetrieverOrder.create!(
+retrieval = Retrieval.create!(
     retriever: retriever,
-    order: first_order,
     e_box: e_box_2,
     qr_code: 'hjvgowi73u7ujcnxa9w87xujfcpkdc'
 )
 
+puts 'Creating Orders...'
+Order.create!(
+    payment: first_payment, 
+    price_in_cents: 1000, 
+    retrieval: retrieval,
+    deliver: deliver
+)

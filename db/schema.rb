@@ -36,16 +36,14 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
     t.index ["user_id"], name: "index_deliverer_addresses_on_user_id"
   end
 
-  create_table "deliverer_orders", force: :cascade do |t|
+  create_table "delivers", force: :cascade do |t|
     t.string "qr_code"
     t.bigint "e_box_id", null: false
-    t.bigint "order_id", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["e_box_id"], name: "index_deliverer_orders_on_e_box_id"
-    t.index ["order_id"], name: "index_deliverer_orders_on_order_id"
-    t.index ["user_id"], name: "index_deliverer_orders_on_user_id"
+    t.index ["e_box_id"], name: "index_delivers_on_e_box_id"
+    t.index ["user_id"], name: "index_delivers_on_user_id"
   end
 
   create_table "e_boxes", force: :cascade do |t|
@@ -59,9 +57,13 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
     t.integer "price_in_cents"
     t.string "status", default: "placed"
     t.bigint "payment_id", null: false
+    t.bigint "retrieval_id", null: false
+    t.bigint "deliver_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["deliver_id"], name: "index_orders_on_deliver_id"
     t.index ["payment_id"], name: "index_orders_on_payment_id"
+    t.index ["retrieval_id"], name: "index_orders_on_retrieval_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -73,16 +75,14 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "retriever_orders", force: :cascade do |t|
+  create_table "retrievals", force: :cascade do |t|
     t.string "qr_code"
     t.bigint "e_box_id", null: false
-    t.bigint "order_id", null: false
     t.bigint "retriever_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["e_box_id"], name: "index_retriever_orders_on_e_box_id"
-    t.index ["order_id"], name: "index_retriever_orders_on_order_id"
-    t.index ["retriever_id"], name: "index_retriever_orders_on_retriever_id"
+    t.index ["e_box_id"], name: "index_retrievals_on_e_box_id"
+    t.index ["retriever_id"], name: "index_retrievals_on_retriever_id"
   end
 
   create_table "retrievers", force: :cascade do |t|
@@ -114,11 +114,11 @@ ActiveRecord::Schema.define(version: 2020_08_24_220608) do
 
   add_foreign_key "deliverer_addresses", "addresses"
   add_foreign_key "deliverer_addresses", "users"
-  add_foreign_key "deliverer_orders", "e_boxes"
-  add_foreign_key "deliverer_orders", "orders"
-  add_foreign_key "deliverer_orders", "users"
+  add_foreign_key "delivers", "e_boxes"
+  add_foreign_key "delivers", "users"
+  add_foreign_key "orders", "delivers"
   add_foreign_key "orders", "payments"
-  add_foreign_key "retriever_orders", "e_boxes"
-  add_foreign_key "retriever_orders", "orders"
-  add_foreign_key "retriever_orders", "retrievers"
+  add_foreign_key "orders", "retrievals"
+  add_foreign_key "retrievals", "e_boxes"
+  add_foreign_key "retrievals", "retrievers"
 end
