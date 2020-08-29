@@ -79,8 +79,8 @@ puts 'Creating Payments...'
 first_payment = Payment.create!(
     card_number: "1234 5678 9012 3456",
     card_holder: "#{first_user.first_name} #{first_user.last_name}",
-    expiry_date: "07/2025",
-    cvv: "123"
+    card_expiry_date: "07/2025",
+    card_cvv: "123"
 )
 
 puts 'Creating Retriver...'
