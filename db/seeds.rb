@@ -76,7 +76,10 @@ e_box_2 = EBox.create!(
     compartiment_size: 'medium',
 )
 puts 'Creating Payments...'
-first_payment = Payment.create!()
+first_payment = Payment.create!(
+    card_number: "1234 5678 9012 3456",
+    card_holder: "#{first_user.first_name} #{first_user.last_name}"
+)
 
 puts 'Creating Retriver...'
 retriever = Retriever.create!(
