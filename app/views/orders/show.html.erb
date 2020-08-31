@@ -1,5 +1,45 @@
-<%= @order.user.email %>
-<%= @order.payment.card_number %>
-<%= @order.retriever.first_name %>
-<%= @order.retrieval.qr_code %>
-<% raise %>
+<div class="order-show">
+    <div class="order-show-white-header">
+        <p>Home / Clique Envios / Destinatário / Pagamento / <span style="color: #000">Sucesso</span></p>
+    </div>
+    <div class="order-show-body">
+        <div class="success-icon">
+            <%= image_tag 'blue_check_icon.svg' %>
+        </div>
+        <div class="success-header-message">
+            <h2>Sucesso!</h2>
+            <p>Obrigado por utilizar Clique Envios</p>
+        </div>
+        <div class="success-qr-code-card">
+            <%= image_tag 'qr_code_success_card.png' %>
+        </div>
+        <div class="success-messages pt-3">
+            <div class="success-message-item row pt-2">
+                <div class="check-icon offset-1 col-1">
+                    <%= image_tag 'white_check_icon.png' %>
+                </div>
+                <div class="success-message-text col-10">
+                    <p>Imprima o código ao lado, e leve seu pacote com o adesivo ao e-Box selecionado - Estação
+                        República L4.</p>
+                </div>
+            </div>
+            <div class="success-message-item row py-3">
+                <div class="check-icon offset-1 col-1">
+                    <%= image_tag 'white_check_icon.png' %>
+                </div>
+                <div class="success-message-text col-10">
+                    <p>Você também receberá o código via email e SMS.</p>
+                </div>
+            </div>
+            <div class="success-message-item row pt-2">
+                <div class="check-icon offset-1 col-1">
+                    <%= image_tag 'white_check_icon.png' %>
+                </div>
+                <div class="success-message-text col-10">
+                    <p>Assim que você depositar a sua encomenda, faremos a transferência, e avisaremos o destinatário
+                        via SMS e email.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
