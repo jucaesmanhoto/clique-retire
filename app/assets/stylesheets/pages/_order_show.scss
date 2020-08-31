@@ -1,0 +1,83 @@
+// Specific CSS for your home-page
+h2 {
+    padding: 0;
+    margin: 0;
+}
+p {
+    padding: 0;
+    margin: 0;
+}
+.order-show {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10vh;
+    background-color:  rgb(46,119,255);
+}
+.order-show-white-header {
+    p {
+        padding-top: 20px;
+        margin-left: 20px;
+    }
+    position: fixed;
+    background-color: white;
+    height: 7vh;
+    width: 100vw;
+    font-size: 0.7em;
+    color: #aaa;
+    // text-align: center;
+}
+
+.order-show-body {
+    background-color: #033cdc;
+    margin-top: 7vh;
+    padding-top: 7vh;
+    background: linear-gradient(0deg, rgba(46,119,255,1) 50%, rgba(3,60,220,1) 50%);
+    color: white;
+    // height: 93vh;
+}
+
+.success-icon {
+    background-color: white;
+    margin: auto;
+    border-radius: 50%;
+    height: 76px;
+    width: 76px;
+    display: flex;
+    img {
+        justify-content: center;
+        margin: auto;
+        height: 28px;
+    }
+}
+
+.success-header-message {
+    display: flex;
+    flex-direction: column;
+    padding-top: 40px;
+    align-items: center;
+    p {
+        font-size: 1.2em;
+    }
+}
+
+.success-qr-code-card {
+    padding-top: 44px;
+    display: flex;
+    img {
+        margin: auto;
+    }
+}
+
+.success-messages {
+    display: flex;
+    flex-direction: column;
+    .success-message-item {
+        margin: 0;
+        flex-direction: row;
+            img {
+                display: inline-block;
+                height: 12px;
+            }
+    
+    }
+}
